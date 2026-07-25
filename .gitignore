@@ -1,0 +1,16 @@
+# SQLite 부산물 (WAL / 저널). cafe.db 자체는 제출물이므로 추적한다.
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / 에디터
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
