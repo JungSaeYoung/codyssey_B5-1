@@ -4,6 +4,9 @@
 -- FK 부모 -> 자식 순서로 입력: category -> menu, customer -> order_header -> order_detail
 -- =====================================================================
 
+-- [SQLite 전용] PRAGMA 는 SQLite 고유 설정 구문이며 연결(connection)마다 기본 OFF 다.
+--   이 파일을 별도 연결로 실행해도 FK 검사가 걸리도록 여기서 다시 켠다.
+--   MySQL / PostgreSQL 은 FK 가 기본 활성이라 이런 스위치가 필요 없다.
 PRAGMA foreign_keys = ON;
 
 -- ---------------------------------------------------------------------

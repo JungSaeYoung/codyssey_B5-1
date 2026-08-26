@@ -21,6 +21,7 @@
 --   EXPLAIN QUERY PLAN - SQLite 전용 (MySQL/PostgreSQL 은 EXPLAIN / EXPLAIN ANALYZE)
 --   PRAGMA             - SQLite 전용
 --   CREATE INDEX IF NOT EXISTS / DROP INDEX IF EXISTS - SQLite·PostgreSQL 지원, MySQL 8.0 은 미지원
+--   sqlite_master       - SQLite 전용 시스템 카탈로그 (MySQL: information_schema.STATISTICS / PostgreSQL: pg_indexes)
 -- =====================================================================
 
 PRAGMA foreign_keys = ON;
@@ -335,6 +336,8 @@ SELECT * FROM order_detail WHERE order_id = 1;
 -- 기대: SEARCH order_detail USING INDEX idx_order_detail_order_id (order_id=?)
 
 -- 현재 DB에 존재하는 인덱스 전체 목록
+--   [SQLite 전용] sqlite_master 는 SQLite 의 시스템 카탈로그 테이블이다.
+--   같은 조회를 MySQL 은 information_schema.STATISTICS, PostgreSQL 은 pg_indexes 로 해야 한다.
 --   UNIQUE 제약(customer.email, category.name, menu.name)은 SQLite 가 sqlite_autoindex_* 를
 --   자동 생성한다. 유일성을 매번 확인하려면 결국 인덱스가 필요하기 때문이다.
 --   즉 이 DB의 인덱스는 "직접 만든 2개 + UNIQUE 가 만든 3개" 로 총 5개다.
