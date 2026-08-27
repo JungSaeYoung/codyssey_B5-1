@@ -85,10 +85,10 @@ sqlite3 -box -header cafe.db < 03_queries.sql > results/results.txt         # �
 
 ```mermaid
 erDiagram
-    category ||--o{ menu : "카테고리 1 - 메뉴 N"
-    customer ||--o{ order_header : "고객 1 - 주문 N"
-    order_header ||--o{ order_detail : "주문 1 - 상세 N"
-    menu ||--o{ order_detail : "메뉴 1 - 상세 N"
+    category     ||..o{ menu         : "1 - N · 비식별 · NO ACTION"
+    customer     ||..o{ order_header : "1 - N · 비식별 · NO ACTION"
+    order_header ||..|{ order_detail : "1 - N · 비식별 · CASCADE"
+    menu         ||..o{ order_detail : "1 - N · 비식별 · NO ACTION"
 
     category {
         INTEGER id PK "AUTOINCREMENT"
@@ -122,6 +122,12 @@ erDiagram
         INTEGER unit_price "NOT NULL, CHECK >= 0 (주문 시점 스냅샷)"
     }
 ```
+
+> **선을 읽는 법.** ERD 표기법에서 실선은 식별 관계, 점선은 비식별 관계다. 위 그림의 네 선이 모두 점선인 것은
+> 표기 누락이 아니라 **대리키 설계의 결과**다 — 5개 테이블 전부 단일 `id` 를 PK 로 써서 부모 PK 가 자식 PK 에
+> 포함되는 곳이 한 군데도 없다(3.3 참고). 그래서 이 그림에서 실제로 갈리는 축은 식별 여부가 아니라 **삭제 정책**이고,
+> 그걸 관계 라벨에 적었다. 끝단 기호도 데이터와 맞췄다 — 주문은 상세가 반드시 1줄 이상이라 `|{`, 나머지 셋은
+> 메뉴 0개인 카테고리('굿즈') · 주문 0건인 고객('서지안') · 한 번도 안 팔린 메뉴('에그샌드위치')가 실제로 있어 `o{` 다.
 
 ### 3.1 왜 테이블을 이렇게 나눴나
 
