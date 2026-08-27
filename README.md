@@ -164,6 +164,10 @@ erDiagram
   | `DELETE FROM category WHERE id=1` | `FOREIGN KEY constraint failed` (차단) |
   | `DELETE FROM order_header WHERE id=1` | 성공. `order_detail` 20행 → 18행 (CASCADE) |
 
+  > 이 구분에는 이름이 있다. `order_header` → `order_detail` 처럼 **부모 없이는 자식이 존재할 수 없는** 관계를 **식별 관계(identifying)**, 나머지 3개처럼 부모가 사라져도 자식이 자기 신원을 따로 갖는 관계를 **비식별 관계(non-identifying)** 라 부른다.
+  > 다만 엄밀한 ERD 표기법은 "부모 PK 가 자식 PK 에 포함되는가" 로 가른다. 이 스키마는 5개 테이블 전부 단일 대리키 `id` 를 PK 로 써서, 그 기준으로는 4개 관계 모두 비식별이다.
+  > `order_detail` 을 진짜 식별 관계로 만들려면 PK 를 `(order_id, line_no)` 복합키로 잡아야 한다 — 이번엔 조인 규칙을 `부모.id = 자식.부모_id` 하나로 통일하려고 대리키를 택했다.
+
 - **`(order_id, menu_id)` 복합 UNIQUE 는 일부러 걸지 않았다.** 같은 주문에 옵션이 다른 같은 메뉴(ICE/HOT)가 별도 라인으로 들어갈 수 있어야 하기 때문이다. 대신 집계는 전부 `SUM(quantity)` 기준이라 라인이 나뉘어도 수치는 정확하다.
 
 ---

@@ -131,6 +131,9 @@ CREATE TABLE order_detail (
     -- 4개 FK 중 유일하게 CASCADE 를 건 곳. 주문 헤더가 사라지면 그 상세 라인은 존재 의미가 없다
     -- (주문 없는 주문상세 = 고아 데이터). 반대로 고객/카테고리/메뉴는 이력 보존이 우선이라 NO ACTION.
     --   실측: DELETE FROM order_header WHERE id=1 -> 성공, order_detail 20행 -> 18행
+    --   [용어] 이처럼 부모 없이 자식이 존재할 수 없는 관계를 '식별 관계(identifying)', 나머지 3개처럼
+    --   자식이 자기 신원을 따로 갖는 관계를 '비식별 관계(non-identifying)' 라 한다. 다만 엄밀한 표기법은
+    --   '부모 PK 가 자식 PK 에 포함되는가' 로 가르므로, 대리키 PK 를 쓴 이 스키마는 4개 모두 비식별. (README 3.3)
     FOREIGN KEY (order_id) REFERENCES order_header(id) ON DELETE CASCADE,
 
     -- 메뉴는 단종되더라도 과거 주문 이력이 남아야 하므로 CASCADE 를 걸지 않는다.
