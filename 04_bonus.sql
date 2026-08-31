@@ -228,8 +228,8 @@ SELECT  c.name,
         COUNT(DISTINCT oh.id)            AS order_count,
         SUM(od.quantity * od.unit_price) AS total_paid
 FROM    customer c
-JOIN    order_header oh ON oh.customer_id = c.id
-JOIN    order_detail od ON od.order_id    = oh.id
+INNER   JOIN order_header oh ON oh.customer_id = c.id
+INNER   JOIN order_detail od ON od.order_id    = oh.id
 WHERE   oh.status = 'COMPLETED'
 GROUP   BY c.id, c.name
 ORDER   BY total_paid DESC, c.id
